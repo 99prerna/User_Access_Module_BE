@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const session = require("express-session");
+const jwt = require("jsonwebtoken");
+const { generateAccessToken } = require("../middleware/authService");
 
 const registerUser = async (req, res, next) => {
   const { firstName, lastName, username, password, role, mail, createdBy } =
@@ -33,7 +35,7 @@ const registerUser = async (req, res, next) => {
   }
 };
 
-const loginUser = async (req, res, next) => {
+const loginUser = async (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -45,24 +47,30 @@ const loginUser = async (req, res, next) => {
     });
 
     if (!user) {
+      console.log("user nt found !!!!");
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
     const match = await bcrypt.compare(password, user.password);
 
-    if (match) {
-      // Set session cookies
-      req.session.username = user.username;
-      req.session.role = user.role;
-
-      // Send redirection URL to Dashborad of admin or user
-      const redirectUrl =
-        user.role === "admin" ? "/admin/Dashboard" : "/user/Dashboard";
-      return res.json({ success: true, redirectUrl });
+    if (!match) {
+      return res.status(401).json({ message: "Invalid username or password" });
     }
+    // generating token
+
+    const token = generateAccessToken(user);
+
+    // sending token to frontend
+    res.cookie("session", token);
+
+    // Send redirection URL to Dashborad of admin or user
+    console.log("user ko sahi message dene");
+    return res
+      .status(200)
+      .json({ message: "Login Success!!", role: user.role });
   } catch (error) {
     console.error("Error during login: ", error);
-    return res.status(500).json({ message: "An error occurred during login" });
+    return res.status(401).json({ message: "Unauthenticated User" });
   }
 };
 

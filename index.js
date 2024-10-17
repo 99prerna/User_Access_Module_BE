@@ -1,20 +1,23 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const userRouter = require("./routes/userRouter");
-const cookieSession = require("cookie-session");
-
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
 
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+
 // Request cookie session
-app.use(
-  cookieSession({
-    name: "session",
-    keys: ["yourSecretKey"], // Replace with a strong secret key
-    maxAge: 24 * 60 * 60 * 1000, // 24 hours
-  })
-);
+app.use(cookieParser());
+// app.use(
+//   cookieSession({
+//     name: "session",
+//     keys: ["yourSecretKey"], // Replace with a strong secret key
+//     maxAge: 24 * 60 * 60 * 1000, // 24 hours
+//   })
+// );
 
 // Request headers configuration
 app.use((req, res, next) => {

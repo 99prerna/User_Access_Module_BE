@@ -15,8 +15,10 @@
     "connect-session-sequelize": "^7.1.7",
     "cookie-parser": "^1.4.7",
     "cookie-session": "^2.1.0",
+    "cors": "^2.8.5",
     "express": "^4.20.0",
     "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.3",
     "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7"
