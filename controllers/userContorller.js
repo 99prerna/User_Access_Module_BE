@@ -47,7 +47,6 @@ const loginUser = async (req, res) => {
     });
 
     if (!user) {
-      console.log("user nt found !!!!");
       return res.status(401).json({ message: "Invalid username or password" });
     }
 

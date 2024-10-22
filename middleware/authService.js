@@ -8,6 +8,7 @@ function generateAccessToken(user) {
     username: user.username,
     role: user.role,
   };
+
   const token = sign(payload, secretKey, { expiresIn: "1h" });
   return token;
 }

@@ -4,7 +4,7 @@ const router = express.Router(); // Use express.Router() instead of app.Router()
 const { verifyUser } = require("../middleware/isAuth");
 
 // User Registration Route
-router.post("/registerUser", verifyUser, registerUser);
+router.post("/registerUser", registerUser);
 
 // User Login Route
 router.post("/loginUser", loginUser);
@@ -20,13 +20,13 @@ router.get("/admin/dashboard", (req, res) => {
 });
 
 // Add more routes as needed, for example, to log out the user
-router.post("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).json({ message: "Could not log out" });
-    }
-    res.redirect("/login");
+router.get("/logout", (req, res) => {
+  res.clearCookie("session", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "Lax",
   });
+  res.json({ message: "session logout!! cookie distried" });
 });
 
 // Export the router
