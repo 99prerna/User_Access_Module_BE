@@ -7,6 +7,8 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
 
+app.use((req, res, next) => {console.log("recived the request"); next()});
+
 app.use(cors({ origin: "http://18.188.230.42:5173", credentials: true }));
 
 // Request cookie session
