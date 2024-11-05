@@ -37,5 +37,6 @@ app.use((req, res, next) => {
 app.use(userRouter);
 
 app.listen(5055, () => {
+  console.log("Backend is up");
   console.log("Server is running on http://localhost:5055");
 });
